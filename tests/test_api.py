@@ -1,8 +1,3 @@
-"""
-Project: Deploy a ML Model to Cloud Application Platform with FastAPI
-Author: vnk8071
-Date: 2023-08-24
-"""
 
 import sys
 import json

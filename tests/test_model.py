@@ -1,8 +1,3 @@
-"""
-Project: Deploy a ML Model to Cloud Application Platform with FastAPI
-Author: vnk8071
-Date: 2023-08-24
-"""
 
 import pickle
 import pandas as pd
@@ -10,10 +5,10 @@ import pandas.api.types as pdtypes
 import pytest
 from sklearn.model_selection import train_test_split
 
-from module.data import process_data
-from module.model import inference, compute_model_metrics
+from starter.ml.data import process_data
+from starter.ml.model import inference, compute_model_metrics
 
-fake_categorical_features = [
+cloned_categorical_features = [
     "workclass",
     "education",
     "marital-status",
@@ -244,7 +239,7 @@ def test_inference(data):
 
     X_test, y_test, _, _ = process_data(
         X=test_df,
-        categorical_features=fake_categorical_features,
+        categorical_features=cloned_categorical_features,
         label="salary",
         training=False,
         encoder=encoder,
@@ -265,7 +260,7 @@ def test_output_metrics(data):
 
     X_test, y_test, _, _ = process_data(
         X=test_df,
-        categorical_features=fake_categorical_features,
+        categorical_features=cloned_categorical_features,
         label="salary",
         training=False,
         encoder=encoder,

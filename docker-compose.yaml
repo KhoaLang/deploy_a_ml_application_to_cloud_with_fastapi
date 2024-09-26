@@ -1,0 +1,19 @@
+services:
+  ml_app:
+    container_name: ml_app
+    image: ml_app
+    command: "tail -f /dev/null"
+    volumes:
+      - .:/app
+    expose:
+      - 8000
+  nginx:
+    container_name: nginx
+    image: nginx:latest
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - ml_app
+    ports:
+      - "80:80"
+    restart: always
