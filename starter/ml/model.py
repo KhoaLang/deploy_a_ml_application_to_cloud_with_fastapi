@@ -1,7 +1,7 @@
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import fbeta_score, precision_score, recall_score
-from .data import process_data
+from starter.ml.data import process_data
 
 
 def train_model(X_train, y_train):

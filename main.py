@@ -10,8 +10,8 @@ from fastapi import FastAPI
 from pydantic import BaseModel, Field
 import hydra
 
-from .starter.ml.data import process_data
-from .starter.ml.model import inference
+from starter.ml.data import process_data
+from starter.ml.model import inference
 
 
 app = FastAPI()
