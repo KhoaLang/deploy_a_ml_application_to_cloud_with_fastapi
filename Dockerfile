@@ -21,4 +21,4 @@ RUN pip install -e .
 
 EXPOSE 80
 
-CMD ["fastapi", "run", "/app/main.py", "--port", "80"]
+CMD ["fastapi", "run", "/app/main/main.py", "--port", "80"]
