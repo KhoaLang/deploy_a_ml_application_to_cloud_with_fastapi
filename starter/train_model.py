@@ -7,23 +7,13 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from omegaconf import DictConfig
 
-try:
-    from starter.ml.data import process_data
-    from starter.ml.model import (
-        inference,
-        compute_model_metrics,
-        train_model,
-        compute_metrics_with_sliced_data
-    )
-except ModuleNotFoundError:
-    sys.path.append('./')
-    from starter.ml.data import process_data
-    from starter.ml.model import (
-        inference,
-        compute_model_metrics,
-        train_model,
-        compute_metrics_with_sliced_data
-    )
+from starter.ml.data import process_data
+from starter.ml.model import (
+    inference,
+    compute_model_metrics,
+    train_model,
+    compute_metrics_with_sliced_data
+)
 
 
 logging.basicConfig(

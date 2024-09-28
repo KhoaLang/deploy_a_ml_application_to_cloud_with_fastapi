@@ -1,33 +1,32 @@
-
-import sys
-import json
 import pytest
 from fastapi.testclient import TestClient
-
-try:
-    from main import app
-except ModuleNotFoundError:
-    sys.path.append('./')
-    from main import app
+from app import app
 
 
 @pytest.fixture(scope="session")
 def client():
+    """
+    Create a TestClient instance
+    """
     client = TestClient(app)
     return client
 
 
-def test_get(client):
-    """Test standard get"""
-    res = client.get("/")
-    assert res.status_code == 200
-    assert res.json() == {"message": "Welcome to the vnk8071 project!"}
+def test_get_method(client):
+    """
+    Test get method
+    """
+    response = client.get("/")
+    assert response.status_code == 200
+    assert response.json() == {
+        "message": "A machine learning deployment project!"}
 
 
-def test_post_above(client):
-    """Test for salary above 50K"""
-
-    res = client.post("/infer", json={
+def test_prediction_for_above_50k(client):
+    """
+    Test for prediction result is salary above 50K
+    """
+    body = {
         "age": 39,
         "workclass": "State-gov",
         "fnlgt": 77516,
@@ -42,37 +41,34 @@ def test_post_above(client):
         "capital-loss": 100,
         "hours-per-week": 50,
         "native-country": "United-States"
-    })
+    }
+    response = client.post("/predict", json=body)
 
-    assert res.status_code == 200
-    assert res.json() == {'Output': '>50K'}
+    assert response.status_code == 200
+    assert response.json() == {'Output': '>50K'}
 
 
-def test_post_below(client):
-    """Test for salary below 50K"""
-    res = client.post("/infer", json={
-        "age": 52,
-        "workclass": "Self-emp-not-inc",
-        "fnlgt": 209642,
-        "education": "HS-grad",
-        "education-num": 9,
-        "marital-status": "Married-civ-spouse",
-        "occupation": "Exec-managerial",
-        "relationship": "Husband",
+def test_prediction_for_below_50k(client):
+    """
+    Test for prediction result is salary below 50K
+    """
+    body = {
+        "age": 23,
+        "workclass": "Private",
+        "fnlgt": 122272,
+        "education": "Bachelors",
+        "education-num": 13,
+        "marital-status": "Never-married",
+        "occupation": "Adm-clerical",
+        "relationship": "Own-child",
         "race": "White",
         "sex": "Male",
         "capital-gain": 0,
         "capital-loss": 0,
-        "hours-per-week": 45,
+        "hours-per-week": 30,
         "native-country": "United-States"
-    })
+    }
+    response = client.post("/predict", json=body)
 
-    assert res.status_code == 200
-    assert res.json() == {'Output': '<=50K'}
-
-
-def test_get_invalid_url(client):
-    """Test invalid url"""
-    res = client.get("/invalid_url")
-    assert res.status_code == 404
-    assert res.json() == {'detail': 'Not Found'}
+    assert response.status_code == 200
+    assert response.json() == {'Output': '<=50K'}

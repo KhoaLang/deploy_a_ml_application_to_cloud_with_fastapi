@@ -1,0 +1,14 @@
+README.md
+setup.py
+app.egg-info/PKG-INFO
+app.egg-info/SOURCES.txt
+app.egg-info/dependency_links.txt
+app.egg-info/top_level.txt
+starter/__init__.py
+starter/train_model.py
+starter/ml/__init__.py
+starter/ml/data.py
+starter/ml/model.py
+tests/__init__.py
+tests/test_api.py
+tests/test_model.py

@@ -1,16 +1,7 @@
-
-import sys
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import fbeta_score, precision_score, recall_score
-import hydra
-from omegaconf import DictConfig
-
-try:
-    from starter.ml.data import process_data
-except ModuleNotFoundError:
-    sys.path.append('./')
-    from starter.ml.data import process_data
+from .data import process_data
 
 
 def train_model(X_train, y_train):
