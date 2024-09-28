@@ -19,6 +19,4 @@ RUN pip install -r /app/requirements.txt
 
 RUN pip install -e .
 
-EXPOSE 80
-
-CMD ["fastapi", "run", "/app/main.py", "--port", "80"]
+CMD ["fastapi", "run", "/app/main.py", "--port", "10000"]
