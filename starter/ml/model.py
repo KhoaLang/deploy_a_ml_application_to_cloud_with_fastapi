@@ -1,21 +1,7 @@
-"""
-Project: Deploy a ML Model to Cloud Application Platform with FastAPI
-Author: vnk8071
-Date: 2023-08-24
-"""
-
-import sys
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
 from sklearn.metrics import fbeta_score, precision_score, recall_score
-import hydra
-from omegaconf import DictConfig
-
-try:
-    from module.data import process_data
-except ModuleNotFoundError:
-    sys.path.append('./')
-    from module.data import process_data
+from starter.ml.data import process_data
 
 
 def train_model(X_train, y_train):
@@ -33,9 +19,9 @@ def train_model(X_train, y_train):
     model
         Trained machine learning model.
     """
-    lr_model = LogisticRegression(max_iter=1000, random_state=8071)
-    lr_model.fit(X_train, y_train.ravel())
-    return lr_model
+    lr = LogisticRegression(max_iter=1000, random_state=8071)
+    lr.fit(X_train, y_train.ravel())
+    return lr
 
 
 def compute_model_metrics(y, preds):
@@ -50,10 +36,10 @@ def compute_model_metrics(y, preds):
         recall : float
         fbeta : float
     """
-    fbeta = fbeta_score(y, preds, beta=1, zero_division=1)
-    precision = precision_score(y, preds, zero_division=1)
-    recall = recall_score(y, preds, zero_division=1)
-    return precision, recall, fbeta
+    f_beta_score = fbeta_score(y, preds, beta=1, zero_division=1)
+    rec = recall_score(y, preds, zero_division=1)
+    prec = precision_score(y, preds, zero_division=1)
+    return prec, rec, f_beta_score
 
 
 def inference(model, X):
@@ -70,36 +56,36 @@ def inference(model, X):
     return preds
 
 
-def compute_metrics_with_slices_data(
-        df, cat_columns, label, encoder, lb, model, slice_output_path):
+def compute_metrics_with_sliced_data(
+        df, category_cols, label, encoder, label_binarizer, model, sliced_data_output_path):
     """
     Compute metrics of the model on slices of the data
 
     Args:
         df (pd.DataFrame): Input dataframe
-        cat_columns (list): list of categorical columns
+        category_cols (list): list of categorical columns
         label (str): Class label string
         encoder (OneHotEncoder): fitted One Hot Encoder
-        lb (LabelBinarizer): label binarizer
-        model (module.model): Trained model binary file
-        slice_output_path (str): path to save the slice output
+        label_binarizer (LabelBinarizer): label binarizer
+        model (starter.ml.model): Trained model binary file
+        sliced_data_output_path (str): path to save the slice output
 
     Returns:
         metrics (pd.DataFrame): Dataframe containing the metrics
     """
     rows_list = list()
-    for feature in cat_columns:
+    for feature in category_cols:
         for category in df[feature].unique():
             row = {}
             tmp_df = df[df[feature] == category]
 
             x, y, _, _ = process_data(
                 X=tmp_df,
-                categorical_features=cat_columns,
+                categorical_features=category_cols,
                 label=label,
                 training=False,
                 encoder=encoder,
-                lb=lb
+                lb=label_binarizer
             )
 
             preds = inference(model, x)
@@ -120,5 +106,5 @@ def compute_metrics_with_slices_data(
             "recall",
             "f1",
             "category"])
-    metrics.to_csv(slice_output_path, index=False)
+    metrics.to_csv(sliced_data_output_path, index=False)
     return metrics

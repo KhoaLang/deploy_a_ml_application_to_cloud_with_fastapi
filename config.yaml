@@ -1,15 +1,15 @@
 main:
-  cat_features: [
-    "workclass",
-    "education",
-    "marital-status",
-    "occupation",
-    "relationship",
-    "race",
-    "sex",
-    "native-country",
-  ]
-  num_features: ["age", "fnlwgt", "education-num", "capital-gain", "capital-loss", "hours-per-week"]
+  category_features:
+    [
+      "workclass",
+      "education",
+      "marital-status",
+      "occupation",
+      "relationship",
+      "race",
+      "sex",
+      "native-country",
+    ]
   label: "salary"
   model_path: "model/lr_model.pkl"
   slice_output_path: "slice_output.txt"

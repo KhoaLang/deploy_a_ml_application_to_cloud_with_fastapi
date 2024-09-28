@@ -1,23 +1,24 @@
 FROM python:3.8-slim
 
-RUN addgroup -S nonroot \
-&& adduser -S nonroot -G nonroot
+USER root
 
-USER nonroot
-
-ENV PYTHONUNBUFFERED 1
-ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONDONTWRITEBYTECODE=1
 
 RUN apt-get update \
-&& apt-get install -y --no-install-recommends build-essential
-
-COPY requirements.txt /tmp/requirements.txt
-RUN pip install --no-cache-dir -r /tmp/requirements.txt
-
+    && apt-get install -y --no-install-recommends build-essential \
+    && apt-get remove --purge -y gnupg lsb-release && \
+    apt-get autoremove -y && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 COPY . /app
-WORKDIR /app/
+WORKDIR /app
 
-EXPOSE 5000
+RUN pip install -r /app/requirements.txt
 
-CMD ["gunicorn", "-k", "uvicorn.workers.UvicornWorker", "--reload", "main:app"]
+RUN pip install -e .
+
+EXPOSE 80
+
+CMD ["fastapi", "run", "/app/main/main.py", "--port", "80"]

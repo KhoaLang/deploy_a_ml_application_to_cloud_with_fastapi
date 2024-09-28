@@ -1,0 +1,9 @@
+services:
+  ml_app:
+    container_name: ml_app
+    image: ml_app
+    command: "tail -f /dev/null"
+    volumes:
+      - .:/app
+    ports:
+      - "80:80"

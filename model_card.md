@@ -6,7 +6,7 @@ For additional information see the Model Card paper: https://arxiv.org/pdf/1810.
 A Logistic Regression were trained.
 
 * Model version: 1.0.0
-* Model date: 24 August 2023
+* Model date: 26 September 2024
 
 ## Intended Use
 The model can be used for predicting income classes on census data. There are two income classes >50K and <=50K (binary classification task).
